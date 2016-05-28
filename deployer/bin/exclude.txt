@@ -1,0 +1,9 @@
+temp/sessions/*
+temp/cache
+temp/btfj.dat
+*.log
+.git
+www/sitemap.xml
+www/upload
+www/thumbnails
+upload

@@ -7,10 +7,7 @@ import string
 
 class MoneyField(serializers.Field):
     def to_representation(self, obj):
-        return {
-            'amount': "%f" % (obj.amount),
-            'currency': "%s" % (obj.currency),
-        }
+        return "{} {}".format(obj.amount, obj.currency)
 
     def to_internal_value(self, data):
         price = string.split(data, " ")

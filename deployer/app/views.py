@@ -1,7 +1,18 @@
-from django.contrib.auth.models import User, Group
+import subprocess
+import uuid
+
 from app.models import Server, Application
+from app.serializers import (
+    ApplicationSerializer,
+    GroupSerializer,
+    UserSerializer,
+    ServerSerializer
+)
+
+from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
-from app.serializers import UserSerializer, GroupSerializer, ApplicationSerializer, ServerSerializer
+from rest_framework.decorators import detail_route
+from rest_framework.response import Response
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -34,3 +45,33 @@ class ApplicationViewSet(viewsets.ModelViewSet):
     """
     queryset = Application.objects.all()
     serializer_class = ApplicationSerializer
+
+    @detail_route()
+    def deploy_database(self, request, pk=None):
+        application = Application.objects.get(pk=pk)
+
+        for server in application.servers.all():
+            subprocess.call('cd bin/database-mysql/;./deploy-database.sh {} {}'.format(
+                application.database,
+                server.ip
+            ))
+
+        return Response('Deploying database...')
+
+    @detail_route()
+    def deploy(self, request, pk=None):
+        application = Application.objects.get(pk=pk)
+
+        hashes = []
+        for server in application.servers.all():
+            hash = uuid.uuid4().hex
+            hashes.append(hash)
+            subprocess.call('cd bin;./deploy-web.sh {} {} {} {} {} &'.format(
+                application.path,
+                server.path,
+                server.ip,
+                'vagrant',
+                hash
+            ), shell=True)
+
+        return Response('Deploying application... {}'.format(', '.join(hashes)))

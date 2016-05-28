@@ -1,1 +1,4 @@
 .vagrant
+deployer/db.sqlite3
+deployer/app/migrations
+*.pyc

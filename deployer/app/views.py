@@ -1,5 +1,6 @@
 import subprocess
 import uuid
+import json
 
 from app.models import Server, Application
 from app.serializers import (
@@ -74,4 +75,4 @@ class ApplicationViewSet(viewsets.ModelViewSet):
                 hash
             ), shell=True)
 
-        return Response('Deploying application... {}'.format(', '.join(hashes)))
+        return Response(json.dumps({'hashes': hashes}))

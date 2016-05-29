@@ -1,14 +1,30 @@
 #!/bin/bash
 
-sudo apt-get install git tig -y
+sudo su
+apt-get install git tig -y
+
+touch /etc/apt/sources.list.d/fkrull-daedsnakes-jessie.list
+
+echo 'deb http://ppa.launchpad.net/fkrull/deadsnakes/ubuntu trusty main' > /etc/apt/sources.list.d/fkrull-daedsnakes-jessie.list
+echo 'deb-src http://ppa.launchpad.net/fkrull/deadsnakes/ubuntu trusty main' >> /etc/apt/sources.list.d/fkrull-daedsnakes-jessie.list
+
+gpg --keyserver keyserver.ubuntu.com --recv-keys DB82666C
+gpg --export DB82666C | apt-key add -
+
+apt-get update
+apt-get install python3.5 -y
+
+rm /usr/bin/python
+ln -s /usr/bin/python3.5 /usr/bin/python
 
 # install pip
 wget https://bootstrap.pypa.io/get-pip.py
-sudo python get-pip.py
+python get-pip.py
 
 rm get-pip.py
 
 # install django
-sudo pip install Django
-sudo pip install djangorestframework
-sudo pip install py-moneyed django-money
+pip install Django
+pip install djangorestframework
+pip install py-moneyed django-money
+pip install websockets

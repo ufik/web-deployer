@@ -2,7 +2,6 @@ from moneyed import Money
 from django.contrib.auth.models import User, Group
 from app.models import Server, Application
 from rest_framework import serializers
-import string
 
 
 class MoneyField(serializers.Field):
@@ -10,7 +9,7 @@ class MoneyField(serializers.Field):
         return "{} {}".format(obj.amount, obj.currency)
 
     def to_internal_value(self, data):
-        price = string.split(data, " ")
+        price = data.split(" ")
         return Money(price[0], price[1])
 
 
@@ -39,4 +38,4 @@ class ApplicationSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Application
-        fields = ('name', 'database', 'price', 'servers')
+        fields = ('name', 'path', 'database', 'price', 'servers')

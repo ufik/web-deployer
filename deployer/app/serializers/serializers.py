@@ -1,6 +1,6 @@
 from moneyed import Money
 from django.contrib.auth.models import User, Group
-from app.models import Server, Application
+from app.models import Server, Application, Address, Invoice, InvoiceItem
 from rest_framework import serializers
 
 
@@ -39,3 +39,23 @@ class ApplicationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Application
         fields = ('name', 'path', 'database', 'price', 'servers')
+
+
+class InvoiceSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Invoice
+        fields = ('date', 'dueDate', 'invoiceNo', 'billTo')
+
+
+class InvoiceItemSerializer(serializers.HyperlinkedModelSerializer):
+    price = MoneyField()
+
+    class Meta:
+        model = InvoiceItem
+        fields = ('title', 'price', 'vat', 'invoice')
+
+
+class AddressSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Address
+        fields = ('name', 'street', 'city', 'postal_code', 'tax_id')

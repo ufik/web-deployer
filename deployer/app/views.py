@@ -2,12 +2,15 @@ import subprocess
 import uuid
 import json
 
-from app.models import Server, Application
+from app.models import Server, Application, Address, Invoice, InvoiceItem
 from app.serializers import (
     ApplicationSerializer,
     GroupSerializer,
     UserSerializer,
-    ServerSerializer
+    ServerSerializer,
+    InvoiceSerializer,
+    InvoiceItemSerializer,
+    AddressSerializer
 )
 
 from django.contrib.auth.models import User, Group
@@ -38,6 +41,30 @@ class ServerViewSet(viewsets.ModelViewSet):
     """
     queryset = Server.objects.all()
     serializer_class = ServerSerializer
+
+
+class InvoiceViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows invoices to be viewed or edited.
+    """
+    queryset = Invoice.objects.all()
+    serializer_class = InvoiceSerializer
+
+
+class InvoiceItemViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows invoice's items to be viewed or edited.
+    """
+    queryset = InvoiceItem.objects.all()
+    serializer_class = InvoiceItemSerializer
+
+
+class AddressViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows addresses to be viewed or edited.
+    """
+    queryset = Address.objects.all()
+    serializer_class = AddressSerializer
 
 
 class ApplicationViewSet(viewsets.ModelViewSet):

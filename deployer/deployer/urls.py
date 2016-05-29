@@ -8,6 +8,9 @@ router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'servers', views.ServerViewSet)
 router.register(r'applications', views.ApplicationViewSet)
+router.register(r'address', views.AddressViewSet)
+router.register(r'invoice', views.InvoiceViewSet)
+router.register(r'invoice-items', views.InvoiceItemViewSet)
 
 urlpatterns = [
 	url(r'^', include(router.urls)),

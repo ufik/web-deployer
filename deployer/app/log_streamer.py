@@ -5,9 +5,9 @@ import websockets
 import time
 
 async def hello(websocket, path):
-    hash = await websocket.recv()
+    filePath = await websocket.recv()
 
-    file = open('/tmp/deploy-{}.log'.format(hash), 'r')
+    file = open('{}'.format(filePath), 'r')
 
     fileString = file.read()
     print(fileString)

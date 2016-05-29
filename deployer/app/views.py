@@ -50,29 +50,35 @@ class ApplicationViewSet(viewsets.ModelViewSet):
     @detail_route()
     def deploy_database(self, request, pk=None):
         application = Application.objects.get(pk=pk)
-
+        
+        logPaths = []
         for server in application.servers.all():
-            subprocess.call('cd bin/database-mysql/;./deploy-database.sh {} {}'.format(
+            hash = uuid.uuid4().hex
+            logPath = '/tmp/deploy-db-{}.log'.format(hash)
+            logPaths.append(logPath)
+            subprocess.call('cd bin/database-mysql/;./deploy-database.sh {} {} > {} 2>&1 &'.format(
                 application.database,
-                server.ip
-            ))
+                server.ip,
+                logPath
+            ), shell=True)
 
-        return Response('Deploying database...')
+        return Response(json.dumps({'paths': logPaths}))
 
     @detail_route()
     def deploy(self, request, pk=None):
         application = Application.objects.get(pk=pk)
 
-        hashes = []
+        logPaths = []
         for server in application.servers.all():
             hash = uuid.uuid4().hex
-            hashes.append(hash)
-            subprocess.call('cd bin;./deploy-web.sh {} {} {} {} {} &'.format(
+            logPath = '/tmp/deploy-{}.log'.format(hash)
+            logPaths.append(logPath)
+            subprocess.call('cd bin;./deploy-web.sh {} {} {} {} > {} 2>&1 &'.format(
                 application.path,
                 server.path,
                 server.ip,
-                'vagrant',
-                hash
+                'vagrant',  # move it into configuration
+                logPath
             ), shell=True)
 
-        return Response(json.dumps({'hashes': hashes}))
+        return Response(json.dumps({'paths': logPaths}))

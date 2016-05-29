@@ -2,6 +2,7 @@
 database=$1
 server=$2
 password=`cat ./.password`
+pwd
 
 if [ "$database" == "" ]; then
 	echo "Add database as a first parameter."
@@ -19,4 +20,5 @@ ssh $server 'bash -s' < ./remote-create-database $database
 ssh $server 'bash -s' < ./remote-import-dump $database
 
 rm -f /tmp/dump-$database.gz /tmp/dump-$database
-echo "DONE."
+
+echo '#EOF#'

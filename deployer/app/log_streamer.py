@@ -4,13 +4,12 @@ import asyncio
 import websockets
 import time
 
-async def hello(websocket, path):
+async def sendLog(websocket, path):
     filePath = await websocket.recv()
 
     file = open('{}'.format(filePath), 'r')
 
     fileString = file.read()
-    print(fileString)
     await websocket.send(fileString)
 
     if '#EOF#' not in fileString:
@@ -24,10 +23,9 @@ async def hello(websocket, path):
                 if '#EOF#' in line:
                     break
 
-                print(line)
                 await websocket.send(line)
 
-start_server = websockets.serve(hello, '0.0.0.0', 8765)
+start_server = websockets.serve(sendLog, '0.0.0.0', 8765)
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()

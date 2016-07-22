@@ -84,7 +84,7 @@ class ApplicationViewSet(viewsets.ModelViewSet):
             hash = uuid.uuid4().hex
             logPath = '/tmp/deploy-db-{}.log'.format(hash)
             logPaths.append(logPath)
-            subprocess.call('cd bin/database-mysql/;./deploy-database.sh {} {} > {} 2>&1 &'.format(
+            subprocess.call('cd bin/database-mysql/;bash ./deploy-database.sh {} {} > {} 2>&1 &'.format(
                 application.database,
                 server.ip,
                 logPath
@@ -101,7 +101,7 @@ class ApplicationViewSet(viewsets.ModelViewSet):
             hash = uuid.uuid4().hex
             logPath = '/tmp/deploy-{}.log'.format(hash)
             logPaths.append(logPath)
-            subprocess.call('cd bin;./deploy-web.sh {} {} {} {} > {} 2>&1 &'.format(
+            subprocess.call('cd bin;bash ./deploy-web.sh {} {} {} {} > {} 2>&1 &'.format(
                 application.path,
                 server.path,
                 server.ip,

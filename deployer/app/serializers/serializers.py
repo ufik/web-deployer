@@ -46,7 +46,7 @@ class ApplicationSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Application
-        fields = ('name', 'path', 'database', 'price', 'servers', 'url')
+        fields = ('name', 'path', 'database', 'price', 'billTo', 'billDate', 'servers', 'url')
 
 
 class InvoiceSerializer(serializers.HyperlinkedModelSerializer):

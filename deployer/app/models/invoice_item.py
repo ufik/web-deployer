@@ -7,4 +7,7 @@ class InvoiceItem(models.Model):
     title = models.CharField(max_length=255)
     price = MoneyField(max_digits=10, decimal_places=2, default_currency='USD')
     vat = models.IntegerField()
-    invoice = models.ForeignKey(Invoice)
+    invoice = models.ForeignKey(Invoice, related_name='invoiceItems')
+
+    def __unicode__(self):
+        return '%s' % (self.title)

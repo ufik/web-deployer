@@ -77,9 +77,13 @@ WSGI_APPLICATION = 'deployer.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+     'default': {
+       'ENGINE': 'django.db.backends.mysql',
+       'NAME': 'deployer',
+       'USER': 'root',
+       'PASSWORD': 'test',
+       'HOST': 'localhost',
+       'PORT': '3306'
     }
 }
 
@@ -124,5 +128,10 @@ STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+        'rest_framework.renderers.AdminRenderer',
+    )
 }

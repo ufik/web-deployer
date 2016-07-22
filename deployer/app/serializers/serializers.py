@@ -14,48 +14,64 @@ class MoneyField(serializers.Field):
 
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.CharField(source='get_absolute_url', read_only=True)
+
     class Meta:
         model = Group
-        fields = ('url', 'name')
+        fields = ('url', 'name', 'url')
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.CharField(source='get_absolute_url', read_only=True)
+
     class Meta:
         model = User
-        fields = ('url', 'username', 'email', 'groups')
+        fields = ('url', 'username', 'email', 'groups', 'url')
 
 
 class ServerSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.CharField(source='get_absolute_url', read_only=True)
+
     costs = MoneyField()
 
     class Meta:
         model = Server
-        fields = ('name', 'ip', 'path', 'costs')
+        fields = ('name', 'ip', 'path', 'costs', 'url')
 
 
 class ApplicationSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.CharField(source='get_absolute_url', read_only=True)
+
     price = MoneyField()
 
     class Meta:
         model = Application
-        fields = ('name', 'path', 'database', 'price', 'servers')
+        fields = ('name', 'path', 'database', 'price', 'servers', 'url')
 
 
 class InvoiceSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.CharField(source='get_absolute_url', read_only=True)
+
+    #invoiceItems = serializers.StringRelatedField(many=True)
+
     class Meta:
         model = Invoice
-        fields = ('date', 'dueDate', 'invoiceNo', 'billTo')
+        fields = ('date', 'dueDate', 'invoiceNo', 'billTo', 'invoiceItems', 'url')
 
 
 class InvoiceItemSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.CharField(source='get_absolute_url', read_only=True)
+
     price = MoneyField()
 
     class Meta:
         model = InvoiceItem
-        fields = ('title', 'price', 'vat', 'invoice')
+        fields = ('title', 'price', 'vat', 'invoice', 'url')
 
 
 class AddressSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.CharField(source='get_absolute_url', read_only=True)
+
     class Meta:
         model = Address
-        fields = ('name', 'street', 'city', 'postal_code', 'tax_id')
+        fields = ('name', 'street', 'city', 'postal_code', 'tax_id', 'url')
